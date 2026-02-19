@@ -5,7 +5,7 @@ import {Customer} from "./Customer";
 
 const companyRouter = fromHono(new Hono())
 
-companyRouter.get("/Auth/beverages", Beverages)
+companyRouter.get("/Vault/beverages", Beverages)
 companyRouter.get("/Costumers/:CompanyName", Customer)
 
 export default companyRouter

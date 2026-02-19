@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS RememberMeTokens;
+CREATE TABLE RememberMeTokens (
+    RememberMeToken TEXT PRIMARY KEY,
+    UserId INTEGER NOT NULL,
+    ExpiresAt INTEGER NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE
+);

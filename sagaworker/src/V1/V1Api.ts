@@ -8,8 +8,7 @@ import AuthRouter from "./AuthEndpoints/AuthRouter"
 
 const app = new Hono<{ Bindings: Env }>()
 
-app.use("/*/Auth/*", (c, next) => {
-	console.log(c)
+app.use("/*/Vault/*", (c, next) => {
   return jwt({
     secret: c.env.JWT_SECRET,
     alg: "HS256",
