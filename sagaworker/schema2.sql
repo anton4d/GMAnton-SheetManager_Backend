@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS Characters;
+CREATE TABLE IF NOT EXISTS Characters (CharacterID INTEGER PRIMARY KEY,Name TEXT,Class TEXT,Race TEXT,Description TEXT,LV INTEGER,System TEXT, CreatedAt DATE,UpdatedAt DATE);
+DROP TABLE IF EXISTS UserCharacters;
+CREATE TABLE IF NOT EXISTS UserCharacters (relationId INTEGER PRIMARY KEY,UserId INTEGER, CharacterId TEXT, FOREIGN KEY(UserId) REFERENCES Users(UserId),FOREIGN KEY(CharacterId) REFERENCES Characters(CharacterID));

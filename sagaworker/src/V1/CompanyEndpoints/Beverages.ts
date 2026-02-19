@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Customers } from "../../types";
+import { type AppContext, Customers } from "../../types/";
 
 export class Beverages extends OpenAPIRoute {
 	schema = {

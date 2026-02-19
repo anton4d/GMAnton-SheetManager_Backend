@@ -1,6 +1,6 @@
 import { Hono } from "hono"
 import { fromHono } from "chanfana"
-import { Env } from "./types";
+import { Env } from "./types/";
 import V1Api from "./V1/V1Api"
 
 
@@ -24,12 +24,15 @@ const openapi = fromHono(app, {
             },
         },
         servers: [
-            { url: 'https://api.example.com', description: 'Production server' },
             { url: 'http://localhost:8787', description: 'Development server' },
         ],
         tags: [
-            { name: 'User', description: 'Operations related to users' },
+            { name: 'Player', description: 'Operations related to Player' },
             { name: 'Gm', description: 'Operations related to Gm' },
+            { name: 'Auth', description: 'Operations related to authentication' },
+            { name: 'V1', description: 'Version 1 api endpoints' },
+            { name: 'get', description: 'get Operations' },
+            { name: 'Post', description: 'Post Operations' },
         ],
     },
     docs_url: '/docs',
