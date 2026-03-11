@@ -58,27 +58,48 @@ export class GithubTaggedRepos extends OpenAPIRoute {
   };
 
   async handle(c: AppContext) {
-    const username = c.env.GITHUB_USERNAME;
-    const tag = c.env.GITHUB_TAG;
+  const username = c.env.GITHUB_USERNAME;
+  const tag = c.env.GITHUB_TAG;
 
-    if (!username || !tag) {
-      return c.json(
-        { success: false, error: "Missing required secrets: GITHUB_USERNAME or GITHUB_TAG" },
-        500
-      );
+  if (!username || !tag) {
+    return c.json(
+      { success: false, error: "Missing required secrets: GITHUB_USERNAME or GITHUB_TAG" },
+      500
+    );
+  }
+
+  const data = await this.getValidatedData<typeof this.schema>();
+  const page = data.query.page ?? 1;
+  const PER_PAGE = 6;
+
+  
+  const searchRes = await fetch(
+    `https://api.github.com/search/repositories?q=user:${username}+topic:${tag.toLowerCase()}&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        "User-Agent": "cloudflare-worker",
+        Authorization: `Bearer ${c.env.GITHUB_TOKEN}`,
+      },
     }
+  );
 
-    const data = await this.getValidatedData<typeof this.schema>();
-    const page = data.query.page ?? 1;
-    const PER_PAGE = 6;
+  if (!searchRes.ok) {
+    return c.json(
+      { success: false, error: `GitHub API error: ${searchRes.statusText}` },
+      500
+    );
+  }
 
-    
-    const allMatchingRepos: z.infer<typeof GithubRepo>[] = [];
-    let githubPage = 1;
+  const searchData: any = await searchRes.json();
+  const repos = searchData.items ?? [];
+  const total = searchData.total_count ?? 0;
 
-    while (true) {
-      const response = await fetch(
-        `https://api.github.com/users/${username}/repos?per_page=100&page=${githubPage}`,
+  
+  const enriched = await Promise.all(
+    repos.map(async (repo: any) => {
+      const langRes = await fetch(
+        `https://api.github.com/repos/${username}/${repo.name}/languages`,
         {
           headers: {
             Accept: "application/vnd.github+json",
@@ -87,22 +108,8 @@ export class GithubTaggedRepos extends OpenAPIRoute {
           },
         }
       );
-
-      if (!response.ok) {
-        return c.json(
-          { success: false, error: `GitHub API error: ${response.statusText}` },
-          500
-        );
-      }
-
-      const repos: any[] = await response.json();
-      if (repos.length === 0) break;
-
-      const matched = repos.filter((repo) =>
-        repo.topics?.includes(tag.toLowerCase())
-      );
-
-      allMatchingRepos.push(...matched.map((repo) => ({
+      const langData = langRes.ok ? await langRes.json() : {};
+      return {
         id: repo.id,
         name: repo.name,
         full_name: repo.full_name,
@@ -113,48 +120,20 @@ export class GithubTaggedRepos extends OpenAPIRoute {
         open_issues_count: repo.open_issues_count,
         stargazers_count: repo.stargazers_count,
         updated_at: repo.updated_at,
-      })));
+        languages: Object.keys(langData),
+      };
+    })
+  );
 
-      if (repos.length < 100) break;
-      githubPage++;
-    }
-
-    const enriched = await Promise.all(
-        allMatchingRepos.map(async (repo) => {
-            const langRes = await fetch(
-            `https://api.github.com/repos/${username}/${repo.name}/languages`,
-            {
-                headers: {
-                Accept: "application/vnd.github+json",
-                "User-Agent": "cloudflare-worker",
-                Authorization: `Bearer ${c.env.GITHUB_TOKEN}`,
-                },
-            }
-            );
-            const langData = langRes.ok ? await langRes.json() : {};
-            return {
-            ...repo,
-            languages: Object.keys(langData),
-            };
-        })
-    );
-
-
-    
-    const total = enriched.length;
-    const start = (page - 1) * PER_PAGE;
-    const end = start + PER_PAGE;
-    const paginatedRepos = enriched.slice(start, end);
-
-    return c.json({
-      success: true,
-      result: paginatedRepos,
-      meta: {
-        page,
-        per_page: PER_PAGE,
-        total,
-        has_more: end < total,
-      },
-    });
-  }
+  return c.json({
+    success: true,
+    result: enriched,
+    meta: {
+      page,
+      per_page: PER_PAGE,
+      total,
+      has_more: page * PER_PAGE < total,
+    },
+  });
+}
 }
