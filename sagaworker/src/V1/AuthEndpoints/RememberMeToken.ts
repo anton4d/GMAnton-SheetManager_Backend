@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, Str } from "chanfana";
 import { z } from "zod";
-import { type AppContext, HttpError, ErrorSchema } from "../../types";
+import { type AppContext, HttpError, ErrorSchema } from "@Types";
 import { sign } from 'hono/jwt';
 import { setCookie } from 'hono/cookie'
 

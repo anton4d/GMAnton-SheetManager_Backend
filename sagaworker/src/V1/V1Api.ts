@@ -1,6 +1,6 @@
 import { Hono } from "hono"
 import { fromHono } from "chanfana"
-import { Env } from "../types"
+import { Env } from "@Types"
 import { jwt } from "hono/jwt"
 
 import companyRouter from "./CompanyEndpoints/CompanyRouter"

@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, HttpError, ZodErrorSchema, ErrorSchema } from "../../types/";
+import { type AppContext, HttpError, ZodErrorSchema, ErrorSchema } from "@Types";
 import { deleteCookie } from 'hono/cookie'
 
 export class LogoutUser extends OpenAPIRoute {

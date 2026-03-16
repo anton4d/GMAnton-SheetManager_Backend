@@ -1,11 +1,17 @@
 import { Hono } from "hono"
+import { cors } from 'hono/cors'
 import { fromHono } from "chanfana"
-import { Env } from "./types/";
+
+import { Env } from "@Types";
 import V1Api from "./V1/V1Api"
 
 
 const app = new Hono<{ Bindings: Env }>()
-
+app.use('*', cors({
+  origin: ['http://localhost:4200', 'https://antonlschristensen.com/'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}))
 const openapi = fromHono(app, {
     schema: {
         info: {
