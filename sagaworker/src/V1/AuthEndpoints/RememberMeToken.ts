@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute, Str } from "chanfana";
+import { OpenAPIRoute} from "chanfana";
 import { z } from "zod";
 import { type AppContext, HttpError, ErrorSchema } from "@Types";
 import { sign } from 'hono/jwt';
@@ -14,9 +14,9 @@ export class RememberMeToken extends OpenAPIRoute {
                 content: {
                     "application/json": {
                         schema: z.object({
-                            success: Bool(),
+                            success: z.boolean(),
                             result: z.object({
-                                Token: Str()
+                                Token: z.string()
                             })
                         }),
                     },

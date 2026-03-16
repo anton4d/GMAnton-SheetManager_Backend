@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute, Num } from "chanfana";
+import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { type AppContext } from "../../types/";
 
@@ -31,7 +31,7 @@ export class GithubTaggedRepos extends OpenAPIRoute {
         content: {
           "application/json": {
             schema: z.object({
-              success: Bool(),
+              success: z.boolean(),
               result: GithubRepo.array(),
               meta: z.object({
                 page: z.number(),
@@ -48,7 +48,7 @@ export class GithubTaggedRepos extends OpenAPIRoute {
         content: {
           "application/json": {
             schema: z.object({
-              success: Bool(),
+              success: z.boolean(),
               error: z.string(),
             }),
           },

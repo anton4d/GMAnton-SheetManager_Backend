@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute, Str } from "chanfana";
+import {  OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { type AppContext, Customers,HttpError } from "@Types";
 
@@ -8,7 +8,7 @@ export class Customer extends OpenAPIRoute {
 		summary: "Get customeres from the company beverages",
 		request: {
 			params: z.object({
-				CompanyName: Str({ description: "A company Name" }),
+				CompanyName: z.string().describe("A Company Name"),
 			}),
 		},
 		responses: {
@@ -18,7 +18,7 @@ export class Customer extends OpenAPIRoute {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
-								success: Bool(),
+								success: z.boolean(),
 								result: Customers.array()
 							}),
 						}),
@@ -31,8 +31,8 @@ export class Customer extends OpenAPIRoute {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
-								success: Bool(),
-								errorMessage: Str()
+								success: z.boolean(),
+								errorMessage: z.boolean()
 							}),
 						}),
 					},
@@ -44,8 +44,8 @@ export class Customer extends OpenAPIRoute {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
-								success: Bool(),
-								errorMessage: Str()
+								success: z.boolean(),
+								errorMessage: z.string()
 							}),
 						}),
 					},

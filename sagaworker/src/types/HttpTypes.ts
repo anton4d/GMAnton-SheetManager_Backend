@@ -1,11 +1,10 @@
-import { DateTime, Str, Num } from "chanfana";
 import { z } from "zod";
 
 
 export const Customers = z.object({
-	CustomerID: Num(),
-	CompanyName: Str(),
-	ContactName: Str()
+	CustomerID: z.number(),
+	CompanyName: z.string(),
+	ContactName: z.string()
 })
 
 export class HttpError extends Error {
