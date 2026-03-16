@@ -1,6 +1,6 @@
 import { Bool, OpenAPIRoute, contentJson, Str} from "chanfana";
 import { z } from "zod";
-import { type AppContext, HttpError,ZodErrorSchema, User, ErrorSchema } from "../../types/";
+import { type AppContext, HttpError,ZodErrorSchema, User, ErrorSchema } from "@Types";
 import { compareSync } from "bcrypt-ts";
 import { setCookie } from 'hono/cookie'
 import { sign } from 'hono/jwt'

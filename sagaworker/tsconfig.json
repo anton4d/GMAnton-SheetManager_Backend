@@ -24,7 +24,11 @@
 			"@types/node",
 			"@types/service-worker-mock",
 			"node"
-		]
+		],
+		"baseUrl": "./",
+		"paths": {
+			"@Types":["src/types"]
+		}
 	},
 	"exclude": ["node_modules", "dist", "tests"],
 	"include": ["src", "worker-configuration.d.ts"]

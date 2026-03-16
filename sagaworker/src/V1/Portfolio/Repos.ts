@@ -74,7 +74,7 @@ export class GithubTaggedRepos extends OpenAPIRoute {
 
   
   const searchRes = await fetch(
-    `https://api.github.com/search/repositories?q=user:${username}+topic:${tag.toLowerCase()}&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`,
+    `https://api.github.com/search/repositories?q=user:${username}&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`,
     {
       headers: {
         Accept: "application/vnd.github+json",
