@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute, contentJson, Str} from "chanfana";
+import {OpenAPIRoute, contentJson} from "chanfana";
 import { z } from "zod";
 import { type AppContext, HttpError,ZodErrorSchema, User, ErrorSchema } from "@Types";
 import { compareSync } from "bcrypt-ts";
@@ -21,9 +21,9 @@ export class LoginUser extends OpenAPIRoute {
                 content: {
                     "application/json": {
                         schema: z.object({
-                            success: Bool(),
+                            success: z.boolean(),
                             result: z.object({
-                                Token: Str()
+                                Token: z.string()
                             })
                         }),
                     },

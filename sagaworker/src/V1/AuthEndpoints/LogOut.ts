@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute } from "chanfana";
+import {OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { type AppContext, HttpError, ZodErrorSchema, ErrorSchema } from "@Types";
 import { deleteCookie } from 'hono/cookie'
@@ -13,7 +13,7 @@ export class LogoutUser extends OpenAPIRoute {
                 content: {
                     "application/json": {
                         schema: z.object({
-                            success: Bool(),
+                            success: z.boolean(),
                         }),
                     },
                 },

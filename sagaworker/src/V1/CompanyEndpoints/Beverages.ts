@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute, Str } from "chanfana";
+import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { type AppContext, Customers } from "@Types";
 
@@ -15,7 +15,7 @@ export class Beverages extends OpenAPIRoute {
 					"application/json": {
 						schema: z.object({
 							series: z.object({
-								success: Bool(),
+								success: z.boolean(),
 								result: Customers.array()
 							}),
 						}),

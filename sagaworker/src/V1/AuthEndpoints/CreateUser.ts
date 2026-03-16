@@ -1,4 +1,4 @@
-import { Bool, OpenAPIRoute, contentJson, Str } from "chanfana";
+import { OpenAPIRoute, contentJson } from "chanfana";
 import { z } from "zod";
 import { type AppContext, HttpError,ZodErrorSchema,ErrorSchema, User } from "@Types";
 import { hashSync } from "bcrypt-ts";
@@ -9,7 +9,7 @@ export class CreateUser extends OpenAPIRoute {
         summary: "Create a user with a username and password",
         request: {
             body: contentJson(z.object({
-                User
+                User: User
             })),
         },
         responses: {
@@ -18,9 +18,9 @@ export class CreateUser extends OpenAPIRoute {
                     content: {
                         "application/json": {
                             schema: z.object({
-                                success: Bool(),
+                                success: z.boolean(),
                                 result: z.object({
-                                    msg: Str()
+                                    msg: z.string()
                                 })
                             }),
                         },

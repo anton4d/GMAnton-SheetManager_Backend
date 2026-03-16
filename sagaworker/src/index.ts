@@ -1,18 +1,19 @@
 import { Hono } from "hono"
 import { cors } from 'hono/cors'
 import { fromHono } from "chanfana"
-
 import { Env } from "@Types";
 import V1Api from "./V1/V1Api"
 
-
 const app = new Hono<{ Bindings: Env }>()
+
 app.use('*', cors({
-  origin: ['http://localhost:4200', 'https://antonlschristensen.com/'],
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
+    origin: ['http://localhost:4200', 'https://antonlschristensen.com'],
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
 }))
+
 const openapi = fromHono(app, {
+    base: "/api",
     schema: {
         info: {
             title: 'My Awesome API',
@@ -49,10 +50,7 @@ const openapi = fromHono(app, {
     raiseUnknownParameters: false,
 });
 
-const BasePath = fromHono(new Hono())
-BasePath.route("/V1",V1Api)// import the v1 api router index 
+openapi.route("/V1", V1Api)
 
-
-openapi.route("/api",BasePath)// import the basepath of /api
 
 export default app
