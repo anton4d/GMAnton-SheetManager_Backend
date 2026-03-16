@@ -7,7 +7,7 @@ import V1Api from "./V1/V1Api"
 const app = new Hono<{ Bindings: Env }>()
 
 app.use('*', cors({
-    origin: ['http://localhost:4200', 'https://antonlschristensen.com'],
+    origin: ['http://localhost:4200', 'https://antonlschristensen.com', 'https://www.antonlschristensen.com'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
 }))
