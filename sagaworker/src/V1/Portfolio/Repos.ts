@@ -1,20 +1,8 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext } from "../../types/";
+import { type AppContext, GithubRepo } from "@Types";
 
-const GithubRepo = z.object({
-  id: z.number(),
-  name: z.string(),
-  full_name: z.string(),
-  description: z.string().nullable(),
-  html_url: z.string(),
-  topics: z.array(z.string()),
-  private: z.boolean(),
-  stargazers_count: z.number(),
-  open_issues_count: z.number(),
-  updated_at: z.string(),
-  languages: z.array(z.string()),
-});
+
 
 export class GithubTaggedRepos extends OpenAPIRoute {
   schema = {
@@ -74,7 +62,7 @@ export class GithubTaggedRepos extends OpenAPIRoute {
 
   
   const searchRes = await fetch(
-    `https://api.github.com/search/repositories?q=user:${username}&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`,
+    `https://api.github.com/search/repositories?q=user:${username}+topic:${tag}&sort=updated&order=desc&per_page=${PER_PAGE}&page=${page}`,
     {
       headers: {
         Accept: "application/vnd.github+json",
